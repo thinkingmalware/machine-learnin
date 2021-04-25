@@ -1,0 +1,78 @@
+Logistic Regression 알고리즘 실습
+
+1. 학습 Data File Load
+
+import pandas as pd
+titanic = pd.read_csv("/home/titanic.csv")
+titanic
+
+
+2. 학습 데이터 선정
+
+titanic_org = titanic[['Survived', 'Pclass', 'Sex', 'Age']]
+titanic_org
+
+
+3. 학습 데이터 정제
+
+titanic=titanic_org.copy()
+titanic.loc[titanic['Sex'] == 'male', 'Sex'] = 0
+titanic.loc[titanic['Sex'] == 'female', 'Sex'] = 1
+titanic
+
+
+4. 학습 데이터 검사
+
+titanic.isnull().any()
+
+5. 데이터 학습 & 학습 결과 확인
+
+y = titanic['Survived']
+X = titanic[['Pclass', 'Sex', 'Age']]
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, shuffle = False)
+print(X_train.head)
+print(X_test.head)
+
+from sklearn.linear_model import LogisticRegression
+
+model = LogisticRegression()
+
+model.fit(X_train, y_train)
+
+print(model.coef_)
+print(model.intercept_)
+print(round(model.score(X_train, y_train), 5))
+print(round(model.score(X_test, y_test), 5))
+
+
+6. 학습 결과 점검: 1번 승객 생존여부 확인
+
+titanic.iloc[[1]]
+
+7. 학습 결과 점검: 1번 승객 조건 입력
+
+import numpy as np
+def LogOdds(data, coefficient, intercept):
+    z = np.dot(data, coefficient) + intercept
+    return z
+def Logistic(z):
+    return np.exp(z) / (1 + np.exp(z))
+def Predict(features, coefficients, intercept):
+    z = LogOdds(features, coefficients, intercept)
+    a = Logistic(z)
+    return a
+def PredictClass(features, coefficients, intercept, threshold):
+    z = LogOdds(features, coefficients, intercept)
+    a = Logistic(z)
+    return np.where(a >= threshold, 1, 0)
+print(Predict(X_train.iloc[1], model.coef_[-1], model.intercept_))
+print(PredictClass(X_train.iloc[1], model.coef_[-1], model.intercept_, 0.5))
+
+
+8. 학습 결과 점검 : 임의의 승객 조건 입력
+
+print(Predict((3,0,47), model.coef_[-1], model.intercept_))
+print(PredictClass((3,0,47), model.coef_[-1], model.intercept_, 0.5))
+
