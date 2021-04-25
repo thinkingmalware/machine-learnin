@@ -1,0 +1,65 @@
+Linear Regression 알고리즘 실습
+
+
+1. Data Load & 조회
+
+
+import csv 
+import numpy as np 
+import pandas as pd 
+import matplotlib.pyplot as plt 
+import seaborn as sns 
+
+df = pd.read_csv('/home/Compare-Repair.txt', delimiter = '\t')
+df
+
+
+
+2. 학습을 위한 Data 구성
+
+
+df[['Minutes', 'Units']] = df[['Minutes', 'Units']].apply(pd.to_numeric)
+print("\n", df.describe(include=['number']))
+
+
+3.학습 Data Type 지정
+
+df.dtypes
+
+
+4. Culumn 단위로 분할
+
+Minutes = df['Minutes']
+Units = df['Units']
+print("Minutes shape: ", Minutes.shape)
+print("Units shape: ", Units.shape)
+
+5. Linear Regression 알고리즘으로 학습
+
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(Units.values.reshape(-1, 1),Minutes)
+print('Coefficient: \n', model.coef_)
+print('Intercept: \n', model.intercept_)
+
+
+6.학습 활용
+
+ypred = model.predict(np.array(5).reshape(-1, 1))
+print("Prediction for Height of 5:",ypred.round(2))
+print("Use linear fit formula:", round((2.32115677 * 5 + 99.26103500761035), 2))
+
+
+7. 그래프 조회
+
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.style.use('ggplot')
+plt.figure(1, (10,8))
+
+plt.scatter(Units, Minutes)
+plt.xlabel("Broken units - numbers")
+plt.ylabel("Repair time - minutes")
+
+plt.show()
+
