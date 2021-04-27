@@ -1,5 +1,6 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 ![GitHub last commit](https://img.shields.io/github/last-commit/jeongjy0317/Arcalive-Emoji-Downloader.svg)
+
 **Dataset_포트명세
 
 번호
@@ -327,5 +328,3 @@ Idle Min			Minimum time a flow was idle before becoming active
 Idle Mean			Mean time a flow was idle before becoming active
 Idle Max			Maximum time a flow was idle before becoming active
 Idle Std			Standard deviation time a flow was idle before becoming active
-
-(출처:https://github.com/ahlashkari/CICFlowMeter)
